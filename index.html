@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100 Windows Reopen</title>
+  <script>
+    let reopenedWindows = [];
+
+    function openNewWindow() {
+      // 새 창 열기
+      for (let i = 0; i < 100; i++) {
+        let newWindow = window.open(
+          '',
+          'reopenWindow' + i,
+          'width=400,height=400'
+        );
+        if (newWindow) {
+          newWindow.document.write('<h1>이 창을 닫아도 100개의 창이 다시 열립니다!</h1>');
+          reopenedWindows.push(newWindow);
+        } else {
+          alert('팝업 차단이 활성화되어 있습니다. 팝업 차단을 해제하세요.');
+        }
+      }
+    }
+
+    function monitorWindows() {
+      // 각 창이 닫혔는지 감시
+      for (let i = 0; i < reopenedWindows.length; i++) {
+        if (reopenedWindows[i].closed) {
+          reopenedWindows[i] = window.open(
+            '',
+            'reopenWindow' + i,
+            'width=400,height=400'
+          );
+          reopenedWindows[i].document.write('<h1>이 창을 닫아도 다시 열립니다!</h1>');
+        }
+      }
+      setTimeout(monitorWindows, 10); // 0.01초 간격으로 확인
+    }
+
+    window.onload = function () {
+      openNewWindow(); // 페이지 로드 시 100개의 창 열기
+      monitorWindows(); // 창 상태 감시 시작
+    };
+  </script>
+</head>
+<body>
+  <h1>GitHub Pages Test</h1>
+  <p>이 페이지는 100개의 창을 열고, 각 창이 닫혀도 다시 열리게 설정되었습니다.</p>
+</body>
+</html>
